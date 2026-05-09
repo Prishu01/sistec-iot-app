@@ -1,200 +1,157 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dashboard</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SISTec IoT App</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
-<body class="bg-gray-100">
+<body>
 
-<nav class="bg-blue-600 text-white p-4 flex justify-between">
-    <h1 class="text-2xl font-bold">
-        SISTec IoT Application 2026
-    </h1>
-
-    <div>
-        Welcome,
-        <span id="username"></span>
-
-        <a href="/logout"
-        class="ml-4 bg-red-500 px-4 py-2 rounded">
-            Logout
-        </a>
+<nav class="navbar">
+    <div class="container nav-content">
+        <div class="brand">
+            SISTec IoT 2026
+        </div>
+        <div class="user-controls">
+            <span>Welcome, <span id="username" class="user-name"></span></span>
+            <a href="/logout" class="btn-danger">Logout</a>
+        </div>
     </div>
 </nav>
 
-<div class="p-6">
+<main class="dashboard-main container">
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        <div class="bg-white p-6 rounded shadow">
-
-            <h2 class="text-xl mb-4">Temperature</h2>
-
-            <h1 id="temp"
-            class="text-6xl font-bold text-blue-500">
-                --
-            </h1>
-
-            <p id="tempDate"></p>
-
+    <div class="metrics-grid">
+        <div class="glass-card metric-card temp">
+            <h2 class="metric-title">Temperature</h2>
+            <div id="temp" class="metric-value">--</div>
+            <div id="tempDate" class="metric-date">Waiting for data...</div>
         </div>
 
-        <div class="bg-white p-6 rounded shadow">
+        <div class="glass-card metric-card hum">
+            <h2 class="metric-title">Humidity</h2>
+            <div id="hum" class="metric-value">--</div>
+            <div id="humDate" class="metric-date">Waiting for data...</div>
+        </div>
+    </div>
 
-            <h2 class="text-xl mb-4">Humidity</h2>
-
-            <h1 id="hum"
-            class="text-6xl font-bold text-green-500">
-                --
-            </h1>
-
-            <p id="humDate"></p>
-
+    <div class="control-grid">
+        <div class="glass-card">
+            <h2 class="section-title">
+                LCD Display Control
+            </h2>
+            <div class="form-group">
+                <textarea id="lcdText" maxlength="16" class="form-control" placeholder="Enter message (Max 16 Characters)"></textarea>
+            </div>
+            <button onclick="saveLCD()" class="btn btn-primary">
+                Update Display
+            </button>
         </div>
 
+        <div class="glass-card">
+            <h2 class="section-title">
+                Sensor Records
+            </h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Temperature</th>
+                            <th>Humidity</th>
+                            <th>Time</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableData">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
-    <div class="bg-white p-6 rounded shadow mt-8">
-
-        <h2 class="text-2xl mb-4">
-            LCD Message
-        </h2>
-
-        <textarea id="lcdText"
-        maxlength="16"
-        class="w-full border p-4 rounded"
-        placeholder="Max 16 Characters"></textarea>
-
-        <button onclick="saveLCD()"
-        class="bg-blue-500 text-white px-6 py-3 rounded mt-4">
-            Submit
-        </button>
-
-    </div>
-
-    <div class="bg-white p-6 rounded shadow mt-8 overflow-auto">
-
-        <h2 class="text-2xl mb-4">
-            Sensor Records
-        </h2>
-
-        <table class="w-full border">
-
-            <thead class="bg-gray-200">
-
-                <tr>
-                    <th class="border p-2">#</th>
-                    <th class="border p-2">Temperature</th>
-                    <th class="border p-2">Humidity</th>
-                    <th class="border p-2">Time</th>
-                    <th class="border p-2">Date</th>
-                    <th class="border p-2">Action</th>
-                </tr>
-
-            </thead>
-
-            <tbody id="tableData"></tbody>
-
-        </table>
-
-    </div>
-
-</div>
+</main>
 
 <script>
-
 fetch("/username")
 .then(res => res.json())
 .then(data => {
     document.getElementById("username").innerText = data.name;
 });
 
-fetch("/latest")
-.then(res => res.json())
-.then(data => {
-
-    document.getElementById("temp").innerText =
-    data.temperature + " °C";
-
-    document.getElementById("hum").innerText =
-    data.humidity + " %";
-
-    document.getElementById("tempDate").innerText =
-    data.time + " | " + data.date;
-
-    document.getElementById("humDate").innerText =
-    data.time + " | " + data.date;
-});
-
-fetch("/records")
-.then(res => res.json())
-.then(data => {
-
-    let rows = "";
-
-    data.forEach((item,index) => {
-
-        rows += `
-        <tr>
-
-            <td class="border p-2">
-                ${index+1}
-            </td>
-
-            <td class="border p-2">
-                ${item.temperature} °C
-            </td>
-
-            <td class="border p-2">
-                ${item.humidity} %
-            </td>
-
-            <td class="border p-2">
-                ${item.time}
-            </td>
-
-            <td class="border p-2">
-                ${item.date}
-            </td>
-
-            <td class="border p-2">
-                <a href="/delete/${item.id}"
-                class="bg-red-500 text-white px-4 py-2 rounded">
-                    Delete
-                </a>
-            </td>
-
-        </tr>
-        `;
-    });
-
-    document.getElementById("tableData").innerHTML = rows;
-});
-
-function saveLCD() {
-
-    const text = document.getElementById("lcdText").value;
-
-    fetch("/save-lcd", {
-
-        method: "POST",
-
-        headers: {
-            "Content-Type":"application/json"
-        },
-
-        body: JSON.stringify({
-            text:text
-        })
-
-    })
-    .then(res => res.text())
+function updateLatest() {
+    fetch("/latest")
+    .then(res => res.json())
     .then(data => {
-        alert("LCD Text Saved");
+        if(data && data.temperature !== undefined) {
+            document.getElementById("temp").innerText = data.temperature + " °C";
+            document.getElementById("hum").innerText = data.humidity + " %";
+            
+            const dateTimeStr = `Last updated: ${data.time} | ${data.date}`;
+            document.getElementById("tempDate").innerText = dateTimeStr;
+            document.getElementById("humDate").innerText = dateTimeStr;
+        }
     });
 }
 
+function updateRecords() {
+    fetch("/records")
+    .then(res => res.json())
+    .then(data => {
+        let rows = "";
+        data.forEach((item,index) => {
+            rows += `
+            <tr>
+                <td>${index+1}</td>
+                <td><span class="badge badge-blue">${item.temperature} °C</span></td>
+                <td><span class="badge badge-green">${item.humidity} %</span></td>
+                <td>${item.time}</td>
+                <td>${item.date}</td>
+                <td>
+                    <a href="/delete/${item.id}" class="btn-danger">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            `;
+        });
+        document.getElementById("tableData").innerHTML = rows;
+    });
+}
+
+// Initial load
+updateLatest();
+updateRecords();
+
+// Poll for real-time updates every 5 seconds
+setInterval(() => {
+    updateLatest();
+    updateRecords();
+}, 5000);
+
+function saveLCD() {
+    const text = document.getElementById("lcdText").value;
+    
+    if(!text) return;
+
+    fetch("/save-lcd", {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            text:text
+        })
+    })
+    .then(res => res.text())
+    .then(data => {
+        alert("LCD Text Updated Successfully");
+        document.getElementById("lcdText").value = '';
+    });
+}
 </script>
 
 </body>

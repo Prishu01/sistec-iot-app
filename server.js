@@ -233,6 +233,27 @@ app.get("/delete/:id", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
+app.get("/api/sensor-data", (req, res) => {
+
+    db.all(
+        `
+        SELECT * FROM sensor_data
+        ORDER BY id ASC
+        `,
+        [],
+        (err, rows) => {
+
+            if (err) {
+                return res.json([]);
+            }
+
+            res.json(rows);
+
+        }
+    );
+
+});
+
 app.listen(PORT, () => {
 
     console.log("Server Running On Port " + PORT);

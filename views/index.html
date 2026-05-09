@@ -1,45 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SISTec IoT App</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
-<body class="bg-gray-100">
+<body>
 
-<div class="flex justify-center items-center h-screen">
+<div class="flex-center">
+    <div class="auth-wrapper">
+        <form action="/login" method="POST" class="glass-card">
+            
+            <div class="auth-header">
+                <h1 class="auth-title">Welcome Back</h1>
+                <p class="auth-subtitle">Sign in to access your IoT Dashboard</p>
+            </div>
 
-    <form action="/login" method="POST"
-    class="bg-white p-8 rounded shadow w-96">
+            <div class="form-group">
+                <input type="email" name="email" placeholder="Email Address" class="form-control" required>
+            </div>
 
-        <h1 class="text-3xl font-bold mb-6 text-center">
-            Login
-        </h1>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Password" class="form-control" required>
+            </div>
 
-        <input type="email"
-        name="email"
-        placeholder="Email"
-        class="w-full border p-3 mb-4 rounded"
-        required>
+            <button type="submit" class="btn btn-primary">
+                Sign In
+            </button>
 
-        <input type="password"
-        name="password"
-        placeholder="Password"
-        class="w-full border p-3 mb-4 rounded"
-        required>
+            <div class="auth-footer">
+                Don't have an account? <a href="/register">Create one now</a>
+            </div>
 
-        <button class="bg-blue-500 text-white w-full p-3 rounded">
-            Login
-        </button>
-
-        <p class="mt-4 text-center">
-            <a href="/register" class="text-blue-500">
-                Register
-            </a>
-        </p>
-
-    </form>
-
+        </form>
+    </div>
 </div>
 
 </body>

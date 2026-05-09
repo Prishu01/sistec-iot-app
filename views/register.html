@@ -1,45 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Register</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - SISTec IoT App</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
-<body class="bg-gray-100">
+<body>
 
-<div class="flex justify-center items-center h-screen">
+<div class="flex-center">
+    <div class="auth-wrapper">
+        <form action="/register" method="POST" class="glass-card">
+            
+            <div class="auth-header">
+                <h1 class="auth-title">Create Account</h1>
+                <p class="auth-subtitle">Join the SISTec IoT platform</p>
+            </div>
 
-    <form action="/register" method="POST"
-    class="bg-white p-8 rounded shadow w-96">
+            <div class="form-group">
+                <input type="text" name="name" placeholder="Full Name" class="form-control" required>
+            </div>
 
-        <h1 class="text-3xl font-bold mb-6 text-center">
-            Register
-        </h1>
+            <div class="form-group">
+                <input type="email" name="email" placeholder="Email Address" class="form-control" required>
+            </div>
 
-        <input type="text"
-        name="name"
-        placeholder="Name"
-        class="w-full border p-3 mb-4 rounded"
-        required>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Password" class="form-control" required>
+            </div>
 
-        <input type="email"
-        name="email"
-        placeholder="Email"
-        class="w-full border p-3 mb-4 rounded"
-        required>
+            <button type="submit" class="btn btn-success">
+                Create Account
+            </button>
 
-        <input type="password"
-        name="password"
-        placeholder="Password"
-        class="w-full border p-3 mb-4 rounded"
-        required>
+            <div class="auth-footer">
+                Already have an account? <a href="/">Sign in instead</a>
+            </div>
 
-        <button class="bg-green-500 text-white w-full p-3 rounded">
-            Register
-        </button>
-
-    </form>
-
+        </form>
+    </div>
 </div>
 
 </body>
