@@ -254,12 +254,8 @@
 
                 .then(data => {
 
-                    if (data.prediction) {
-
-                        document.getElementById("prediction").innerText =
-                            parseFloat(data.prediction).toFixed(1) + " °C";
-
-                    }
+                    document.getElementById("prediction").innerText =
+                        parseFloat(data.prediction).toFixed(1) + " °C";
 
                 });
 

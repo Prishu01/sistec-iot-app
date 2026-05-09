@@ -256,9 +256,8 @@ app.get("/api/sensor-data", (req, res) => {
 });
 
 
-app.get("/get-prediction", (req, res) => {
 
-    const fs = require("fs");
+app.get("/get-prediction", (req, res) => {
 
     if (!fs.existsSync("prediction.json")) {
 
@@ -272,15 +271,16 @@ app.get("/get-prediction", (req, res) => {
     }
 
     const data =
-    fs.readFileSync("prediction.json", "utf8");
+    fs.readFileSync(
+        "prediction.json",
+        "utf8"
+    );
 
     res.send(data);
 
 });
 
 app.post("/save-prediction", (req, res) => {
-
-    const fs = require("fs");
 
     const prediction =
     req.body.prediction;
