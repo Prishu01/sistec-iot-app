@@ -4,7 +4,12 @@
   "description": "SISTec IoT Application 2026",
   "main": "server.js",
   "scripts": {
+    "build": "node -e \"require('sqlite3'); console.log('sqlite3 native binding ok')\"",
+    "postinstall": "npm rebuild sqlite3",
     "start": "node server.js"
+  },
+  "engines": {
+    "node": "22.x"
   },
   "dependencies": {
     "axios": "^1.16.0",
