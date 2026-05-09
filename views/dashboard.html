@@ -1,157 +1,393 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
     <title>Dashboard - SISTec IoT App</title>
+
     <link rel="stylesheet" href="/style.css">
+
 </head>
+
 <body>
 
 <nav class="navbar">
+
     <div class="container nav-content">
+
         <div class="brand">
             SISTec IoT 2026
         </div>
+
         <div class="user-controls">
-            <span>Welcome, <span id="username" class="user-name"></span></span>
-            <a href="/logout" class="btn-danger">Logout</a>
+
+            <span>
+                Welcome,
+                <span id="username"
+                class="user-name"></span>
+            </span>
+
+            <a href="/logout"
+            class="btn-danger">
+
+                Logout
+
+            </a>
+
         </div>
+
     </div>
+
 </nav>
 
 <main class="dashboard-main container">
 
+    <!-- METRIC CARDS -->
+
     <div class="metrics-grid">
+
+        <!-- Temperature Card -->
+
         <div class="glass-card metric-card temp">
-            <h2 class="metric-title">Temperature</h2>
-            <div id="temp" class="metric-value">--</div>
-            <div id="tempDate" class="metric-date">Waiting for data...</div>
+
+            <h2 class="metric-title">
+                Temperature
+            </h2>
+
+            <div id="temp"
+            class="metric-value">
+
+                --
+
+            </div>
+
+            <div id="tempDate"
+            class="metric-date">
+
+                Waiting for data...
+
+            </div>
+
         </div>
+
+        <!-- Humidity Card -->
 
         <div class="glass-card metric-card hum">
-            <h2 class="metric-title">Humidity</h2>
-            <div id="hum" class="metric-value">--</div>
-            <div id="humDate" class="metric-date">Waiting for data...</div>
+
+            <h2 class="metric-title">
+                Humidity
+            </h2>
+
+            <div id="hum"
+            class="metric-value">
+
+                --
+
+            </div>
+
+            <div id="humDate"
+            class="metric-date">
+
+                Waiting for data...
+
+            </div>
+
         </div>
+
+        <!-- AI Prediction Card -->
+
+        <div class="glass-card metric-card prediction">
+
+            <div class="ai-header">
+
+                <h2 class="metric-title">
+                    AI Prediction
+                </h2>
+
+                <div class="ai-dot"></div>
+
+            </div>
+
+            <div id="prediction"
+            class="metric-value prediction-value">
+
+                --
+
+            </div>
+
+            <div class="metric-date">
+
+                Next Day Temperature Forecast
+
+            </div>
+
+        </div>
+
     </div>
 
+    <!-- LCD CONTROL + TABLE -->
+
     <div class="control-grid">
-        <div class="glass-card">
-            <h2 class="section-title">
-                LCD Display Control
-            </h2>
-            <div class="form-group">
-                <textarea id="lcdText" maxlength="16" class="form-control" placeholder="Enter message (Max 16 Characters)"></textarea>
-            </div>
-            <button onclick="saveLCD()" class="btn btn-primary">
-                Update Display
-            </button>
-        </div>
+
+        <!-- LCD CONTROL -->
 
         <div class="glass-card">
+
             <h2 class="section-title">
-                Sensor Records
+
+                LCD Display Control
+
             </h2>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Temperature</th>
-                            <th>Humidity</th>
-                            <th>Time</th>
-                            <th>Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableData">
-                        <!-- Data will be populated here -->
-                    </tbody>
-                </table>
+
+            <div class="form-group">
+
+                <textarea
+                id="lcdText"
+                maxlength="16"
+                class="form-control"
+                placeholder="Enter message (Max 16 Characters)"></textarea>
+
             </div>
+
+            <button onclick="saveLCD()"
+            class="btn btn-primary">
+
+                Update Display
+
+            </button>
+
         </div>
+
+        <!-- RECORDS TABLE -->
+
+        <div class="glass-card">
+
+            <h2 class="section-title">
+
+                Sensor Records
+
+            </h2>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Temperature</th>
+
+                            <th>Humidity</th>
+
+                            <th>Time</th>
+
+                            <th>Date</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tableData">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
     </div>
 
 </main>
 
 <script>
+
 fetch("/username")
+
 .then(res => res.json())
+
 .then(data => {
-    document.getElementById("username").innerText = data.name;
+
+    document.getElementById("username").innerText =
+    data.name;
+
 });
 
 function updateLatest() {
+
     fetch("/latest")
+
     .then(res => res.json())
+
     .then(data => {
+
         if(data && data.temperature !== undefined) {
-            document.getElementById("temp").innerText = data.temperature + " °C";
-            document.getElementById("hum").innerText = data.humidity + " %";
-            
-            const dateTimeStr = `Last updated: ${data.time} | ${data.date}`;
-            document.getElementById("tempDate").innerText = dateTimeStr;
-            document.getElementById("humDate").innerText = dateTimeStr;
+
+            document.getElementById("temp").innerText =
+            data.temperature + " °C";
+
+            document.getElementById("hum").innerText =
+            data.humidity + " %";
+
+            const dateTimeStr =
+            `Last updated: ${data.time} | ${data.date}`;
+
+            document.getElementById("tempDate").innerText =
+            dateTimeStr;
+
+            document.getElementById("humDate").innerText =
+            dateTimeStr;
+
         }
+
     });
+
+}
+
+function updatePrediction() {
+
+    fetch("/get-prediction")
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        if(data.prediction){
+
+            document.getElementById("prediction").innerText =
+            parseFloat(data.prediction).toFixed(1) + " °C";
+
+        }
+
+    });
+
 }
 
 function updateRecords() {
+
     fetch("/records")
+
     .then(res => res.json())
+
     .then(data => {
+
         let rows = "";
+
         data.forEach((item,index) => {
+
             rows += `
+
             <tr>
+
                 <td>${index+1}</td>
-                <td><span class="badge badge-blue">${item.temperature} °C</span></td>
-                <td><span class="badge badge-green">${item.humidity} %</span></td>
-                <td>${item.time}</td>
-                <td>${item.date}</td>
+
                 <td>
-                    <a href="/delete/${item.id}" class="btn-danger">
-                        Delete
-                    </a>
+
+                    <span class="badge badge-blue">
+
+                        ${item.temperature} °C
+
+                    </span>
+
                 </td>
+
+                <td>
+
+                    <span class="badge badge-green">
+
+                        ${item.humidity} %
+
+                    </span>
+
+                </td>
+
+                <td>${item.time}</td>
+
+                <td>${item.date}</td>
+
+                <td>
+
+                    <a href="/delete/${item.id}"
+                    class="btn-danger">
+
+                        Delete
+
+                    </a>
+
+                </td>
+
             </tr>
+
             `;
+
         });
-        document.getElementById("tableData").innerHTML = rows;
+
+        document.getElementById("tableData").innerHTML =
+        rows;
+
     });
+
 }
 
-// Initial load
 updateLatest();
+
 updateRecords();
 
-// Poll for real-time updates every 5 seconds
+updatePrediction();
+
 setInterval(() => {
+
     updateLatest();
+
     updateRecords();
+
+    updatePrediction();
+
 }, 5000);
 
 function saveLCD() {
-    const text = document.getElementById("lcdText").value;
-    
+
+    const text =
+    document.getElementById("lcdText").value;
+
     if(!text) return;
 
     fetch("/save-lcd", {
+
         method: "POST",
+
         headers: {
             "Content-Type":"application/json"
         },
+
         body: JSON.stringify({
             text:text
         })
+
     })
+
     .then(res => res.text())
+
     .then(data => {
+
         alert("LCD Text Updated Successfully");
+
         document.getElementById("lcdText").value = '';
+
     });
+
 }
+
 </script>
 
 </body>
