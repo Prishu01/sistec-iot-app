@@ -439,3 +439,64 @@ tbody tr:last-child td {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+
+.prediction{
+
+    background: linear-gradient(
+        135deg,
+        rgba(255,0,150,0.2),
+        rgba(140,0,255,0.2)
+    );
+
+    border: 1px solid rgba(255,255,255,0.1);
+
+}
+
+.prediction-value{
+
+    color:#ff4fd8;
+
+}
+
+.ai-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.ai-dot{
+
+    width:12px;
+
+    height:12px;
+
+    border-radius:50%;
+
+    background:#ff4fd8;
+
+    animation:pulse 1s infinite;
+
+}
+
+@keyframes pulse{
+
+    0%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+    50%{
+        transform:scale(1.5);
+        opacity:0.5;
+    }
+
+    100%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
