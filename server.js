@@ -1,3 +1,4 @@
+const axios = require("axios");
 const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
@@ -251,6 +252,41 @@ app.get("/api/sensor-data", (req, res) => {
 
         }
     );
+
+});
+
+
+app.get("/get-prediction", (req, res) => {
+
+    if (!fs.existsSync("prediction.json")) {
+
+        fs.writeFileSync(
+            "prediction.json",
+            JSON.stringify({
+                prediction: "0"
+            })
+        );
+
+    }
+
+    const data = fs.readFileSync("prediction.json","utf8");
+
+    res.send(data);
+
+});
+
+app.post("/save-prediction", (req, res) => {
+
+    const prediction = req.body.prediction;
+
+    fs.writeFileSync(
+        "prediction.json",
+        JSON.stringify({
+            prediction: prediction
+        })
+    );
+
+    res.send("Prediction Saved");
 
 });
 
